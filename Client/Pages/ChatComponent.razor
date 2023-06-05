@@ -39,7 +39,15 @@
                             </div>
                             <div>
                                 <MudText Typo="Typo.body1">@UserName</MudText>
-                                <MudText Typo="Typo.caption" Style="font-size: xx-small!important;">@message.CreatedDate.ToLocalTime().ToString("dd MMM, yyyy hh:mm tt")</MudText>
+                                <div style="display: grid; gap: 0.5rem">
+                                    <MudText Typo="Typo.caption" Style="font-size: xx-small!important;">Created @message.CreatedDate.ToLocalTime().ToString("dd MMM, yyyy hh:mm tt")</MudText>
+                                    @if(message.LastModifiedDate != message.CreatedDate)
+                                    {
+                                        <MudText Typo="Typo.caption" Style="font-size: xx-small!important;">Modified @message.LastModifiedDate.ToLocalTime().ToString("dd MMM, yyyy hh:mm tt")</MudText>
+
+                                    }
+
+                                </div>
                                 <div style="display: grid; grid-template-columns: auto min-content min-content; gap: 0.5rem">
                                     @if(isEditing && editingId == message.Id.ToString())
                                     {
