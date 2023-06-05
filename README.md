@@ -6,7 +6,7 @@ Prerequisites:
 
 MSSQLExpress, .NET 6 SDK
 
-To run, clone the application and launch the ASP.NET hosted Blazor WASM app using the SqlSanitize.Server configuration in either Visual Studio or VSCode.
+To run, clone the application and launch the ASP.NET hosted Blazor WASM app using the SqlSanitize.Server configuration in either Visual Studio or VSCode. To access the Swagger endpoint, simply append /swagger to the end of the url once the application is running.
 
 Notes:
 
