@@ -6,22 +6,30 @@
     }
     else
     {
-        @if (!IsUserRegistered)
-        {
-            <MudText>Welcome! Create a username to continue.</MudText>
-            <br />
-            <MudTextField @bind-Value="@UserName" />
-
-            <MudButton Disabled="@(string.IsNullOrEmpty(UserName))" OnClick="@(()=> IsUserRegistered = true)">Continue</MudButton>
-        }
-        else
-        {
-            <MudPaper Elevation="25" Class="py-4 flex-grow-1">
+        <MudPaper Elevation="25" Class="py-4 flex-grow-1">
 
 
 
 
-                <div class="d-flex flex-column px-4" style="max-height:65vh;min-height:65vh; overflow:scroll;" id="chatContainer">
+            @if (!IsUserRegistered)
+            {
+                <div class="d-flex flex-column px-4" style="max-height:65vh;min-height:65vh; overflow:scroll;">
+                    <MudText>Welcome! Enter a name to continue.</MudText>
+                    <br />
+                    <MudTextField @bind-Value="@UserName" Immediate="true" />
+                    <br/>
+                    <MudButton Color="Color.Primary" StartIcon="@Icons.Material.Outlined.Save" ButtonType="ButtonType.Button" Disabled="@(string.IsNullOrEmpty(UserName))" OnClick="@(()=> IsUserRegistered = true)">Continue</MudButton>
+                </div>
+
+            }
+            else
+            {
+
+
+
+
+
+                <div class="d-flex flex-column px-4" style="max-height:65vh;min-height:65vh; overflow:scroll;">
                     @foreach (var message in AllMessages)
                     {
                         <div class="d-flex flex-row my-4">
@@ -39,11 +47,13 @@
                 <MudPaper Elevation="25" Class="d-flex flex-row px-2 mx-4" Style="">
                     <MudTextField T="string" Placeholder="Enter your message..." DisableUnderLine="true" Class="mt-n2 mx-4"
                     @bind-Value="Message" />
-                    <MudButton OnClick="SendMessage" StartIcon="@Icons.Material.Outlined.Send" Color="Color.Secondary" ButtonType="ButtonType.Button">Send</MudButton>
+                    <MudButton OnClick="SendMessage" StartIcon="@Icons.Material.Outlined.Send" Color="Color.Primary" ButtonType="ButtonType.Button">Send</MudButton>
                 </MudPaper>
-            </MudPaper>
-           
-        }
+
+
+            }
+        </MudPaper>
+
     }
 
 
