@@ -1,12 +1,20 @@
 using Microsoft.AspNetCore.ResponseCompression;
+using SqlSanitize.Server.Persistance;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<SqlSanitizeDbContext>();
 builder.Services.AddRazorPages();
 builder.Services.AddSwaggerGen();
+
+
+
+
 
 var app = builder.Build();
 
@@ -21,6 +29,14 @@ else
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<SqlSanitizeDbContext>();
+    // use context
+    dbContext.Database.EnsureCreated();
+}
+
 
 app.UseHttpsRedirection();
 
