@@ -32,6 +32,7 @@
                 <div class="d-flex flex-column px-4" style="max-height:65vh;min-height:65vh; overflow:scroll;">
                     @foreach (var message in AllMessages)
                     {
+                        
                         <div class="d-flex flex-row my-4">
                             <div class="mr-4">
                                 <MudAvatar Color="Color.Secondary" Style="height:50px; width:50px;">@UserName.FirstOrDefault()</MudAvatar>
@@ -39,7 +40,22 @@
                             <div>
                                 <MudText Typo="Typo.body1">@UserName</MudText>
                                 <MudText Typo="Typo.caption" Style="font-size: xx-small!important;">@message.CreatedDate.ToLocalTime().ToString("dd MMM, yyyy hh:mm tt")</MudText>
-                                <MudText Typo="Typo.body2" Style=" padding: 15px;background-color: var(--mud-palette-background-grey);border-radius: 5px;margin-top:5px">@message.Message</MudText>
+                                <div style="display: grid; grid-template-columns: auto min-content min-content; gap: 0.5rem">
+                                    @if(isEditing && editingId == message.Id.ToString())
+                                    {
+                                        <MudTextField @bind-Value="@message.Message"></MudTextField>
+                                        <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Cancel" OnClick="@(()=> {isEditing = false; StateHasChanged();})" />
+                                        <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Save" OnClick="@(async ()=> await UpdateMessage(message))" />
+                                    }
+                                    else
+                                    {
+                                        <MudText Typo="Typo.body2" Style=" padding: 15px;background-color: var(--mud-palette-background-grey);border-radius: 5px;margin-top:5px">@message.Message</MudText>
+                                        <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Edit" OnClick="@(()=> {isEditing = true; editingId = message.Id.ToString(); StateHasChanged();})" />
+                                        <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Delete" OnClick="@(async ()=> await DeleteMessage(message.Id.ToString()))" />
+                                    }
+                                   
+
+                                </div>
                             </div>
                         </div>
                     }
@@ -73,6 +89,9 @@
 
     bool IsUserRegistered { get; set; } = false;
 
+    bool isEditing {get; set; }= false;
+
+    string editingId { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -131,6 +150,8 @@
         else
         {
             Snackbar.Add("Success!", Severity.Success);
+            isEditing = false;
+            editingId = string.Empty;
             await GetAllData();
 
         }
