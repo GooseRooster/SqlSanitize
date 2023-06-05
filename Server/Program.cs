@@ -32,7 +32,7 @@ app.UseRouting();
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "SqlSanitize API");
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "SqlSanitize API V1");
 });
 
 
