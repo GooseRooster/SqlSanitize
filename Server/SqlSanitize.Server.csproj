@@ -18,9 +18,5 @@
     <ProjectReference Include="..\Shared\SqlSanitize.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Persistance\" />
-  </ItemGroup>
-
 
 </Project>
