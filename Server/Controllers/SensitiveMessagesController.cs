@@ -73,6 +73,9 @@ namespace SqlSanitize.Server.Controllers
             if (string.IsNullOrEmpty(sensitiveMessage.Message))
                 return Problem("Error encountered sanitizing message input!");
 
+            sensitiveMessage.LastModifiedDate = DateTime.UtcNow;
+
+
             _context.Entry(sensitiveMessage).State = EntityState.Modified;
 
             try
@@ -110,6 +113,9 @@ namespace SqlSanitize.Server.Controllers
             if (string.IsNullOrEmpty(sensitiveMessage.Message))
                 return Problem("Error encountered sanitizing message input!");
 
+            //UTC, due to timezones
+            sensitiveMessage.CreatedDate = DateTime.UtcNow;
+            sensitiveMessage.LastModifiedDate = DateTime.UtcNow;
             _context.SensitiveMessages.Add(sensitiveMessage);
             await _context.SaveChangesAsync();
 
