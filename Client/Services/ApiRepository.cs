@@ -91,9 +91,7 @@ namespace SqlSanitize.Client.Services
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    var cont = await resp.Content.ReadAsStringAsync();
 
-                    var result = JsonConvert.DeserializeObject<List<SensitiveMessage>>(cont);
 
                     return true;
                 }
@@ -122,9 +120,7 @@ namespace SqlSanitize.Client.Services
 
                 if (resp.IsSuccessStatusCode)
                 {
-                    var cont = await resp.Content.ReadAsStringAsync();
 
-                    var result = JsonConvert.DeserializeObject<List<SensitiveMessage>>(cont);
 
                     return true;
                 }

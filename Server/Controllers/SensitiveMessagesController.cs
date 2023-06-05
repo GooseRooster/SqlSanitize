@@ -36,7 +36,7 @@ namespace SqlSanitize.Server.Controllers
             }
 
 
-            return await _context.SensitiveMessages.ToListAsync();
+            return await _context.SensitiveMessages.OrderBy(x => x.CreatedDate).ToListAsync();
         }
 
         // GET: api/SensitiveMessages/5
@@ -112,6 +112,7 @@ namespace SqlSanitize.Server.Controllers
 
             if (string.IsNullOrEmpty(sensitiveMessage.Message))
                 return Problem("Error encountered sanitizing message input!");
+
 
             //UTC, due to timezones
             sensitiveMessage.CreatedDate = DateTime.UtcNow;
