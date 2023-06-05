@@ -1,12 +1,13 @@
 using Microsoft.AspNetCore.ResponseCompression;
 using SqlSanitize.Server.Persistance;
+using SqlSanitize.Server.Services;
 using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
-
+builder.Services.AddScoped<ISanitizer, Sanitizer>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<SqlSanitizeDbContext>();
 builder.Services.AddRazorPages();

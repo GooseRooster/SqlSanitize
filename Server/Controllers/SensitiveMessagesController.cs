@@ -16,10 +16,10 @@ namespace SqlSanitize.Server.Controllers
     public class SensitiveMessagesController : ControllerBase
     {
         private readonly SqlSanitizeDbContext _context;
-        private readonly Sanitizer _sanitizer;
+        private readonly ISanitizer _sanitizer;
         private readonly ILogger _logger;
 
-        public SensitiveMessagesController(SqlSanitizeDbContext context, Sanitizer sanitizer, ILogger<SensitiveMessagesController> logger)
+        public SensitiveMessagesController(SqlSanitizeDbContext context, ISanitizer sanitizer, ILogger<SensitiveMessagesController> logger)
         {
             _context = context;
             _sanitizer = sanitizer;
@@ -30,12 +30,12 @@ namespace SqlSanitize.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SensitiveMessage>>> GetSensitiveMessages()
         {
-          if (_context.SensitiveMessages == null)
-          {
-              return NotFound();
-          }
-          
-          
+            if (_context.SensitiveMessages == null)
+            {
+                return NotFound();
+            }
+
+
             return await _context.SensitiveMessages.ToListAsync();
         }
 
@@ -43,10 +43,10 @@ namespace SqlSanitize.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<SensitiveMessage>> GetSensitiveMessage(Guid id)
         {
-          if (_context.SensitiveMessages == null)
-          {
-              return NotFound();
-          }
+            if (_context.SensitiveMessages == null)
+            {
+                return NotFound();
+            }
             var sensitiveMessage = await _context.SensitiveMessages.FindAsync(id);
 
             if (sensitiveMessage == null)
@@ -99,13 +99,13 @@ namespace SqlSanitize.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<SensitiveMessage>> PostSensitiveMessage(SensitiveMessage sensitiveMessage)
         {
-          if (_context.SensitiveMessages == null)
-          {
-              return Problem("Entity set 'SqlSanitizeDbContext.SensitiveMessages'  is null.");
-          }
+            if (_context.SensitiveMessages == null)
+            {
+                return Problem("Entity set 'SqlSanitizeDbContext.SensitiveMessages'  is null.");
+            }
 
-          //sanitize message before saving in the DB
-          sensitiveMessage.Message = await _sanitizer.SanitizeMessage(_logger, sensitiveMessage.Message, _context);
+            //sanitize message before saving in the DB
+            sensitiveMessage.Message = await _sanitizer.SanitizeMessage(_logger, sensitiveMessage.Message, _context);
 
             if (string.IsNullOrEmpty(sensitiveMessage.Message))
                 return Problem("Error encountered sanitizing message input!");
