@@ -26,9 +26,14 @@ Performance
 A couple notes on performance. As stated in the comments of the sanitizer service:
 
 ```
-//One could load this entire table into a MemoryCache instance to reduce round trips to the database when large request traffic is experienced.
-//However, filtering the matches at this level does off load processing work to the database itself, speeding up execution.
-//As SQL keywords are case insensitive, case needs to be evaluated for input, however this has the disadvantage that words used for common communication (like "Specific", or "On") will get flagged, meaning this sanitizer is quite aggressive in practice. 
+//One could load this entire table into a MemoryCache instance to reduce round trips 
+//to the database when large request traffic is experienced.
+//However, filtering the matches at this level does off load 
+//processing work to the database itself, speeding up execution.
+//As SQL keywords are case insensitive, case needs to be evaluated for input, 
+//however this has the disadvantage that words used for 
+//common communication (like "Specific", or "On") will get flagged, 
+//meaning this sanitizer is quite aggressive in practice. 
 //Ideally some kind of rule system could be used to evaluate exceptions such as the above.
 var messageUpper = message.ToUpper();
 var matches = await context.SqlSensitives.Where(x => messageUpper.Contains(x.Filter)).ToListAsync();
