@@ -21,6 +21,9 @@ namespace SqlSanitize.Server.Services
                 var messageUpper = message.ToUpper();
                 var matches = await context.SqlSensitives.Where(x => messageUpper.Contains(x.Filter)).ToListAsync();
 
+                //message is clean
+                if (matches == null || (matches != null && !matches.Any()))
+                    return message;
 
                 //replace each match in the message with * characters
                 foreach(var match in matches)
